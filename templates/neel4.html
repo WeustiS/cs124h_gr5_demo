@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+</head>
+
+<body>
+  <h1>{{ title }}</h1>
+
+
+  <ul>
+    {% for item in data['q'] %}
+        <li>
+            {{item}}
+        </li>
+    {% endfor %}
+  </ul>
+  <ul>
+    {% for item in data['a'] %}
+      <li>
+          {{item}}
+      </li>
+    {% endfor %}
+  </ul>
+  <ul>
+    {% for item in data['f'] %}
+        <li>
+            {{item}}
+        </li>
+    {% endfor %}
+  </ul>
+
+  <form id="resp" name="resp" method="get" action="/neel4">
+    <p>
+      <label>response
+        <input type="text" name="answer" id="INPUT1" />
+      </label>
+    </p>
+  </form>
+</body>
+</html>
+
+<!--
+  NEEL_STATE = {
+    'curr_q': 0,
+    'q': [],
+    'f': [],
+    'a': [],
+    'prompt': ""
+}
+-->
