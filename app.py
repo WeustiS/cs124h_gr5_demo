@@ -5,9 +5,9 @@ from flask import request, redirect, url_for
 import os
 import openai
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
-# MODEL = 'text-ada-001'
-MODEL = 'text-davinci-003'
+# openai.api_key = os.getenv("OPENAI_API_KEY")
+MODEL = 'text-ada-001'
+# MODEL = 'text-davinci-003'
 # -- Initialization section --
 app = Flask(__name__)
 app.debug = True
@@ -36,6 +36,9 @@ def index():
     if args.get("billjz2"):
         print("billjz2! ", url_for('billjz2', input=input))
         return redirect(url_for('billjz2', input=input), code=307)
+    if args.get("simone6"):
+        print("simone6! ", url_for('simone6', input=input))
+        return redirect(url_for('simone6', input=input), code=307)
     
     
     return render_template('index.html')
@@ -64,6 +67,29 @@ def dluzano2():
     data = data.split("\u2022")
     
     return render_template('dluzano2.html', title='Dluzano2', data=data)
+
+@app.route("/simone6")
+def simone6():
+    args = request.args.to_dict()
+    print(args)
+    build_prompt_suffix = f'''Passage: {args.get('input')} 
+    Questions:
+    '''
+    resp = openai.Completion.create(
+        model=MODEL,
+        prompt=simone6_prompt + build_prompt_suffix,
+        temperature=0,
+        max_tokens=70,
+        top_p=1,
+        frequency_penalty=0.0,
+        presence_penalty=0.0,
+        stop=["Passage:"]
+    )
+    print(resp)
+    data = resp['choices'][0]['text']
+    
+    return render_template('simone6.html', title='simone6', data=data)
+
 
 @app.route("/billjz2")
 def billjz2():
@@ -335,3 +361,32 @@ C. W. W. Grainger
 D. John Milton Gregory
 
 Answer: C. W. W. Grainger'''
+ 
+
+simone6_prompt = '''```I am a bot that reads a passage and then generates a question-and-answer set relevant to the passage.
+
+Passage: 
+Queen are a British rock band formed in London in 1970. The band comprised Freddie Mercury (lead vocals, piano), Brian May (guitar, vocals), Roger Taylor (drums, vocals) and John Deacon (bass). Their earliest works were influenced by progressive rock, hard rock and heavy metal, but the band gradually ventured into more conventional and radio-friendly works by incorporating further styles, such as arena rock and pop rock.
+
+Before forming Queen, May and Taylor had played together in the band Smile. Mercury was a fan of Smile and encouraged them to experiment with more elaborate stage and recording techniques. He joined in 1970 and suggested the name "Queen". Deacon was recruited in February 1971, before the band released their eponymous debut album in 1973. Queen first charted in the UK with their second album, Queen II, in 1974. Sheer Heart Attack later that year and A Night at the Opera in 1975 brought them international success. The latter featured "Bohemian Rhapsody", which stayed at number one in the UK for nine weeks and helped popularise the music video format.
+
+The band's 1977 album News of the World contained "We Will Rock You" and "We Are the Champions", which have become anthems at sporting events. By the early 1980s, Queen were one of the biggest stadium rock bands in the world. "Another One Bites the Dust" from The Game (1980) became their best-selling single, while their 1981 compilation album Greatest Hits is the best-selling album in the UK and is certified nine times platinum in the US. Their performance at the 1985 Live Aid concert is ranked among the greatest in rock history by various publications. In August 1986, Mercury gave his last performance with Queen at Knebworth, England. In 1991, he died of bronchopneumonia, a complication of AIDS. Deacon retired in 1997. Since 2004, May and Taylor have toured as "Queen +", with vocalists Paul Rodgers and Adam Lambert.
+
+Queen have been a global presence in popular culture for more than half a century. Estimates of their record sales range from 250 million to 300 million, making them one of the world's best-selling music artists. In 1990, Queen received the Brit Award for Outstanding Contribution to British Music. They were inducted into the Rock and Roll Hall of Fame in 2001, and with each member having composed hit singles all four were inducted into the Songwriters Hall of Fame in 2003. In 2005 they received the Ivor Novello Award for Outstanding Song Collection from the British Academy of Songwriters, Composers, and Authors, and in 2018 they were presented the Grammy Lifetime Achievement Award.
+
+Questions: 
+1. When did Queen first form? 
+Answer: Queen first formed in London in 1970.
+
+2. Who were the members of Queen? 
+Answer: The members of Queen were Freddie Mercury (lead vocals, piano), Brian May (guitar, vocals), Roger Taylor (drums, vocals) and John Deacon (bass).
+
+3. What styles of music did Queen initially experiment with? 
+Answer: Queen initially experimented with progressive rock, hard rock and heavy metal.
+
+4. What is Queen's best-selling single? 
+Answer: Queen's best-selling single is "Another One Bites the Dust" from The Game (1980).
+
+5. What awards have Queen received? 
+Answer: Queen have received the Brit Award for Outstanding Contribution to British Music, induction into the Rock and Roll Hall of Fame, induction into the Songwriters Hall of Fame, the Ivor Novello Award for Outstanding Song Collection from the British Academy of Songwriters, Composers, and Authors, and the Grammy Lifetime Achievement Award.```
+'''
