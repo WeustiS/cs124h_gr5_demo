@@ -86,9 +86,10 @@ def simone6():
         stop=["Passage:"]
     )
     print(resp)
-    data = resp['choices'][0]['text']
+    data = resp['choices'][0]['text'].replace("\n", "<br>")
     
-    return render_template('simone6.html', title='simone6', data=data)
+    
+    return render_template('simone6.html', title='simone6/anindya4', data=data)
 
 
 @app.route("/billjz2")
@@ -389,4 +390,33 @@ Answer: Queen's best-selling single is "Another One Bites the Dust" from The Gam
 
 5. What awards have Queen received? 
 Answer: Queen have received the Brit Award for Outstanding Contribution to British Music, induction into the Rock and Roll Hall of Fame, induction into the Songwriters Hall of Fame, the Ivor Novello Award for Outstanding Song Collection from the British Academy of Songwriters, Composers, and Authors, and the Grammy Lifetime Achievement Award.```
+
+Passage: 
+Christopher Francis "Frank" Ocean (born Christopher Edwin Breaux; October 28, 1987),[3][4] is an American singer, songwriter, and rapper. His works are noted by music critics for featuring avant-garde styles and introspective, elliptical lyrics.[5][6] Ocean has won two Grammy Awards and a Brit Award for International Male Solo Artist among other accolades, and his two studio albums have been listed on Rolling Stone's 500 Greatest Albums of All Time (2020).
+Ocean began his musical career as a ghostwriter, prior to joining the hip hop collective Odd Future in 2010. The following year, he released his first mixtape, Nostalgia, Ultra, and subsequently secured a recording contract with Def Jam Recordings. His first studio album, the eclectic Channel Orange (2012), incorporated R&B and soul styles. At the 2013 Grammy Awards, Channel Orange was nominated for Album of the Year and won Best Urban Contemporary Album; one of its singles, "Thinkin Bout You", was nominated for Record of the Year. He was named by Time as one of the world's most influential people in 2013.
+
+After a four-year hiatus, Ocean released a visual album titled Endless in 2016 to fulfill contractual obligations with Def Jam. Ocean self-released his second studio album, Blonde, a day after Endless's release. Blonde expanded on Ocean's experimental musical approach and ranked first on Pitchfork's list of the best albums of the 2010s decade. It was his first number-one album on the US Billboard 200 and was certified platinum by the Recording Industry Association of America (RIAA). From 2017 onwards, Ocean released sporadic singles, worked as a photographer for magazines, and launched the fashion brand Homer.
+
+Questions:
+1. Who is Frank Ocean? 
+Answer: Frank Ocean is an American singer, songwriter, and rapper. 
+
+2. What is Frank Ocean's birth name? 
+Answer: Frank Ocean's birth name is Christopher Edwin Breaux
+
+3. Where was Frank Ocean born? 
+Answer: He was born in New Orleans. 
+
+4. For what album did Frank Ocean win Best Urban Contemporary Album? 
+Answer: He won the award for  Channel Orange
+
+5. Which Frank Ocean album is completely visual? 
+Answer: Endless is completely visual.  
+
+6. What fashion brand did Frank Ocean find? 
+Answer: Frank Ocean founded the fashion brand Homer.
+
+7. What is Frank Ocean's next song? 
+Answer: Frank Ocean has not released any new songs recently, so there is no definitive answer to this question.
+
 '''
