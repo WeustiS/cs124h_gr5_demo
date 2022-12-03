@@ -79,7 +79,7 @@ def simone6():
         model=MODEL,
         prompt=simone6_prompt + build_prompt_suffix,
         temperature=0,
-        max_tokens=70,
+        max_tokens=250,
         top_p=1,
         frequency_penalty=0.0,
         presence_penalty=0.0,
@@ -89,7 +89,7 @@ def simone6():
     data = resp['choices'][0]['text'].replace("\n", "<br>")
     
     
-    return render_template('simone6.html', title='simone6/anindya4', data=data)
+    return render_template('simone6.html', title='simone6/anindya4/linneam2', data=data)
 
 
 @app.route("/billjz2")
@@ -364,7 +364,7 @@ D. John Milton Gregory
 Answer: C. W. W. Grainger'''
  
 
-simone6_prompt = '''```I am a bot that reads a passage and then generates a question-and-answer set relevant to the passage.
+simone6_prompt = '''I am a bot that reads a passage and then generates a question-and-answer set relevant to the passage.
 
 Passage: 
 Queen are a British rock band formed in London in 1970. The band comprised Freddie Mercury (lead vocals, piano), Brian May (guitar, vocals), Roger Taylor (drums, vocals) and John Deacon (bass). Their earliest works were influenced by progressive rock, hard rock and heavy metal, but the band gradually ventured into more conventional and radio-friendly works by incorporating further styles, such as arena rock and pop rock.
@@ -418,5 +418,25 @@ Answer: Frank Ocean founded the fashion brand Homer.
 
 7. What is Frank Ocean's next song? 
 Answer: Frank Ocean has not released any new songs recently, so there is no definitive answer to this question.
+
+Passage: 
+
+The leading feminists met at Seneca Falls, New York, in 1848. At the conclusion of their convention-the first women's rights convention in American history-they issued a document closely modeled after the Declaration of Independence. Their "Declaration of Sentiments" declared that "all men and women are created equal" and listed women's grievances against laws and customs that discriminated against them.
+Following the Seneca Falls Convention, Elizabeth Cady Stanton and Susan B. Anthony led the campaign for equal voting, legal, and property rights for women. In the 1850s, however, the issue of women's rights was overshadowed by the crisis over slavery.
+
+1. Who was a leading feminist in the 19th century?
+Answer: Elizabeth Cady Stanton and Susan B. Anthony were leading feminists in the 19th century. 
+
+2. What was Seneca Falls? 
+Answer: Seneca Falls was the first American women's rights convention which occurred in Seneca Falls, New York, in 1848. 
+
+3. What document was written during the Seneca Falls Convention?
+Answer: Feminists at the Seneca Falls convention wrote the "Declaration of Sentiments". 
+
+4. What is the "Declaration of Sentiments"?
+Answer: The "Declaration of Sentiments" is a document written at the Seneca Falls Convention arguing for women's rights. It was modeled after the "Declaration of Independence" and like its predecessor stated the grievances against laws and customs that were discriminatory. 
+
+5. Why did the women's rights movement lose traction in the 1800s?
+Answer: The debate over slavery in the United States overshadowed the fight for women's rights. 
 
 '''
