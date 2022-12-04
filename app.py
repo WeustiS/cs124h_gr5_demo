@@ -86,7 +86,7 @@ def simone6():
         stop=["Passage:"]
     )
     print(resp)
-    data = resp['choices'][0]['text'].replace("\n", "<br>")
+    data = resp['choices'][0]['text'].replace("\n", "<br>").replace("Answer:", "<details>")
     
     
     return render_template('simone6.html', title='simone6/anindya4/linneam2', data=data)
