@@ -6,8 +6,8 @@ import os
 import openai
 
 # openai.api_key = os.getenv("OPENAI_API_KEY")
-MODEL = 'text-ada-001'
-# MODEL = 'text-davinci-003'
+# MODEL = 'text-ada-001'
+MODEL = 'text-davinci-003'
 # -- Initialization section --
 app = Flask(__name__)
 app.debug = True
@@ -124,8 +124,7 @@ def neel4():
 
         build_prompt_suffix = f'''Passage: 
         {args.get('input')}
-        Flashcards:
-        Question 1:
+        Question:
         '''
         full_prompt = neel4_prompt + build_prompt_suffix
 
@@ -143,14 +142,29 @@ def neel4():
         data = resp['choices'][0]['text']
         NEEL_STATE['curr_q'] = 1 
         NEEL_STATE['q'].append(data)
-        NEEL_STATE['prompt'] = full_prompt
+        NEEL_STATE['prompt'] = full_prompt + data
 
         
     else:
         ans = args.get('answer')
         NEEL_STATE['a'].append(ans)
         print(ans)
-        NEEL_STATE['prompt'] = NEEL_STATE['prompt'] + "\n Answer:" + ans
+        NEEL_STATE['prompt'] = NEEL_STATE['prompt'] + "\n Answer:" + ans + "\n Feedback:"
+        print(NEEL_STATE['prompt'])
+        resp = openai.Completion.create(
+            model=MODEL,
+            prompt=NEEL_STATE['prompt'],
+            temperature=0,
+            max_tokens=50,
+            top_p=1,
+            frequency_penalty=0.0,
+            presence_penalty=0.0,
+            stop=["Question:"]
+        )
+
+        feedback = resp['choices'][0]['text']   
+        NEEL_STATE['f'].append(feedback)
+        NEEL_STATE['prompt'] = NEEL_STATE['prompt'] + feedback + "\nQuestion:"
         resp = openai.Completion.create(
             model=MODEL,
             prompt=NEEL_STATE['prompt'],
@@ -161,13 +175,11 @@ def neel4():
             presence_penalty=0.0,
             stop=["Answer:"]
         )
-
-        lines = resp['choices'][0]['text'].split("\n")
-        print(lines)
-        # print(NEEL_STATE)
-        NEEL_STATE['q'].append(lines[1])
-        NEEL_STATE['f'].append(lines[0])
-        NEEL_STATE['curr_q'] = NEEL_STATE['curr_q'] + 1        
+        question = resp['choices'][0]['text']
+        NEEL_STATE['q'].append(question)
+        NEEL_STATE['prompt'] = NEEL_STATE['prompt'] + question + "\nAnswer:"
+        NEEL_STATE['curr_q'] = NEEL_STATE['curr_q'] + 1 
+        
     return render_template('neel4.html', title='neel4', data=NEEL_STATE)
 
 
@@ -215,7 +227,8 @@ Study Notes:
 • Photosynthesis is an essential process for all life on Earth, as it provides the energy needed for plants to grow and produce oxygen.
 '''
 
-neel4_prompt = '''Generate free response questions,  example answers, and corresponding feedback based on the following passage.
+neel4_prompt = '''Generate free response questions,  answers, and corresponding feedback based on the following passage. 
+Questions should be written on one line, starting with "Question:". The next line will be the correct answer to the question and will start with "Answer:". The next line will be the feedback of how well that answer responds to the question. Then, the next question will be provided.
 
 Passage: 
 A computer is a digital electronic machine that can be programmed to carry out sequences of arithmetic or logical operations (computation) automatically. Modern computers can perform generic sets of operations known as programs. These programs enable computers to perform a wide range of tasks. A computer system is a nominally complete computer that includes the hardware, operating system (main software), and peripheral equipment needed and used for full operation. This term may also refer to a group of computers that are linked and function together, such as a computer network or computer cluster. A broad range of industrial and consumer products use computers as control systems. Simple special-purpose devices like microwave ovens and remote controls are included, as are factory devices like industrial robots and computer-aided design, as well as general-purpose devices like personal computers and mobile devices like smartphones. Computers power the Internet, which links billions of other computers and users. Early computers were meant to be used only for calculations. Simple manual instruments like the abacus have aided people in doing calculations since ancient times. Early in the Industrial Revolution, some mechanical devices were built to automate long tedious tasks, such as guiding patterns for looms. More sophisticated electrical machines did specialized analog calculations in the early 20th century. The first digital electronic calculating machines were developed during World War II. The first semiconductor transistors in the late 1940s were followed by the silicon-based MOSFET (MOS transistor) and monolithic integrated circuit (IC) chip technologies in the late 1950s, leading to the microprocessor and the microcomputer revolution in the 1970s. The speed, power and versatility of computers have been increasing dramatically ever since then, with transistor counts increasing at a rapid pace (as predicted by Moore's law), leading to the Digital Revolution during the late 20th to early 21st centuries. Conventionally, a modern computer consists of at least one processing element, typically a central processing unit (CPU) in the form of a microprocessor, along with some type of computer memory, typically semiconductor memory chips. The processing element carries out arithmetic and logical operations, and a sequencing and control unit can change the order of operations in response to stored information. Peripheral devices include input devices (keyboards, mice, joystick, etc.), output devices (monitor screens, printers, etc.), and input/output devices that perform both functions (e.g., the 2000s-era touchscreen). Peripheral devices allow information to be retrieved from an external source and they enable the result of operations to be saved and retrieved.

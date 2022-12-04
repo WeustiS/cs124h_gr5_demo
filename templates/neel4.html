@@ -8,28 +8,31 @@
 <body>
   <h1>{{ title }}</h1>
 
-
-  <ul>
+  Questions:
+  <ol>
+    
     {% for item in data['q'] %}
         <li>
             {{item}}
         </li>
     {% endfor %}
-  </ul>
-  <ul>
+  </ol>
+  Answers:
+  <ol>
     {% for item in data['a'] %}
       <li>
           {{item}}
       </li>
     {% endfor %}
-  </ul>
-  <ul>
+  </ol>
+  Feedback:
+  <ol>
     {% for item in data['f'] %}
         <li>
             {{item}}
         </li>
     {% endfor %}
-  </ul>
+  </ol>
 
   <form id="resp" name="resp" method="get" action="/neel4">
     <p>
